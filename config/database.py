@@ -21,10 +21,20 @@ def _normalize_postgres_url(url: str) -> str:
         scheme = "postgresql+asyncpg"
     elif scheme == "postgresql" and "+asyncpg" not in parsed.scheme:
         scheme = "postgresql+asyncpg"
+
     query = dict(parse_qsl(parsed.query, keep_blank_values=True))
-    if query.get("sslmode") == "require":
-        query.pop("sslmode")
-        query["ssl"] = "true"
+    sslmode = query.get("sslmode")
+    if sslmode is not None:
+        normalized = str(sslmode).strip().lower()
+        if normalized in {"require", "true", "1", "yes"}:
+            query.pop("sslmode", None)
+            query["ssl"] = "true"
+        elif normalized in {"disable", "allow", "prefer", "verify-ca", "verify-full"}:
+            query["sslmode"] = normalized
+        else:
+            query.pop("sslmode", None)
+            query["ssl"] = "true"
+
     parsed = parsed._replace(scheme=scheme, query=urlencode(query))
     return urlunparse(parsed)
 
