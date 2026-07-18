@@ -26,14 +26,22 @@ def _normalize_postgres_url(url: str) -> str:
     sslmode = query.get("sslmode")
     if sslmode is not None:
         normalized = str(sslmode).strip().lower()
-        if normalized in {"require", "true", "1", "yes"}:
-            query.pop("sslmode", None)
-            query["ssl"] = "true"
+        if normalized in {"require", "required", "true", "1", "yes", "on"}:
+            query["sslmode"] = "require"
         elif normalized in {"disable", "allow", "prefer", "verify-ca", "verify-full"}:
             query["sslmode"] = normalized
         else:
-            query.pop("sslmode", None)
-            query["ssl"] = "true"
+            query["sslmode"] = "require"
+
+    ssl_flag = query.get("ssl")
+    if ssl_flag is not None and "sslmode" not in query:
+        normalized_ssl = str(ssl_flag).strip().lower()
+        if normalized_ssl in {"true", "1", "yes", "on"}:
+            query.pop("ssl", None)
+            query["sslmode"] = "require"
+        elif normalized_ssl in {"false", "0", "no", "off"}:
+            query.pop("ssl", None)
+            query["sslmode"] = "disable"
 
     parsed = parsed._replace(scheme=scheme, query=urlencode(query))
     return urlunparse(parsed)
