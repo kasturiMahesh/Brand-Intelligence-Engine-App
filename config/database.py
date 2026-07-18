@@ -1,6 +1,8 @@
 """
 Database connection management — async PostgreSQL + MongoDB.
 """
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
+
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.pool import NullPool
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -11,10 +13,21 @@ from typing import AsyncGenerator
 
 logger = get_logger(__name__)
 
+
+def _normalize_postgres_url(url: str) -> str:
+    parsed = urlparse(url)
+    query = dict(parse_qsl(parsed.query, keep_blank_values=True))
+    if query.get("sslmode") == "require":
+        query.pop("sslmode")
+        query["ssl"] = "true"
+        parsed = parsed._replace(query=urlencode(query))
+    return urlunparse(parsed)
+
+
 # ─── PostgreSQL ───────────────────────────────────────────────────────────────
 
 engine = create_async_engine(
-    settings.POSTGRES_URL,
+    _normalize_postgres_url(settings.POSTGRES_URL),
     echo=settings.DEBUG,
     pool_size=20,
     max_overflow=10,
