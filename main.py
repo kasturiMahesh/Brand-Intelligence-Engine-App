@@ -41,7 +41,10 @@ app = FastAPI(
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://brand-intelligence-engine-app.vercel.app"],
+    allow_origins=[
+        "https://brand-intelligence-engine-app.vercel.app",
+        "https://brand-intelligence-engine-kk4j0r30k-kasturimaheshs-projects.vercel.app",
+    ],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
