@@ -39,7 +39,7 @@ def _normalize_postgres_url(url: str) -> str:
         ssl_value = "disable" if normalized_ssl in {"false", "0", "no", "off"} else "require"
 
     if ssl_value is not None:
-        query["sslmode"] = ssl_value
+        query["ssl"] = "true" if ssl_value == "require" else "false"
 
     parsed = parsed._replace(scheme=scheme, query=urlencode(query))
     return urlunparse(parsed)
