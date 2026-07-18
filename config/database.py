@@ -16,12 +16,28 @@ logger = get_logger(__name__)
 
 def _normalize_postgres_url(url: str) -> str:
     parsed = urlparse(url)
+    scheme = parsed.scheme
+    if scheme == "postgres":
+        scheme = "postgresql+asyncpg"
+    elif scheme == "postgresql" and "+asyncpg" not in parsed.scheme:
+        scheme = "postgresql+asyncpg"
     query = dict(parse_qsl(parsed.query, keep_blank_values=True))
     if query.get("sslmode") == "require":
         query.pop("sslmode")
         query["ssl"] = "true"
-        parsed = parsed._replace(query=urlencode(query))
+    parsed = parsed._replace(scheme=scheme, query=urlencode(query))
     return urlunparse(parsed)
+
+
+def _normalize_redis_url(url: str) -> str:
+    parsed = urlparse(url)
+    if parsed.scheme == "rediss":
+        return url
+    if parsed.scheme == "redis" and parsed.query:
+        query = dict(parse_qsl(parsed.query, keep_blank_values=True))
+        if query.get("ssl") in {"true", "1", "yes"}:
+            return urlunparse(parsed._replace(scheme="rediss"))
+    return url
 
 
 # ─── PostgreSQL ───────────────────────────────────────────────────────────────

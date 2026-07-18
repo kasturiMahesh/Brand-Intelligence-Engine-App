@@ -22,6 +22,7 @@ from typing import Optional
 import anthropic
 import redis.asyncio as aioredis
 
+from config.database import _normalize_redis_url
 from config.settings import settings
 from utils.logger import get_logger
 
@@ -104,7 +105,7 @@ async def _get_redis() -> Optional[aioredis.Redis]:
     if _REDIS is None:
         try:
             _REDIS = await aioredis.from_url(
-                settings.REDIS_URL,
+                _normalize_redis_url(settings.REDIS_URL),
                 encoding="utf-8",
                 decode_responses=True,
                 max_connections=20,

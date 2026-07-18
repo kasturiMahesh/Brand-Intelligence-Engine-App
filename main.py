@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from contextlib import asynccontextmanager
 from api.routes import search, crawl, content, health, analytics
+from config.database import init_postgres, init_mongo
 from config.settings import settings
 from utils.logger import get_logger
 from workers.queue_manager import queue_manager
@@ -20,6 +21,8 @@ logger = get_logger(__name__)
 async def lifespan(app: FastAPI):
     """Manage startup and shutdown of background services."""
     logger.info("🚀 Starting Web Intelligence Engine...")
+    await init_postgres()
+    await init_mongo()
     await queue_manager.initialize()
     worker = CrawlWorker(concurrency=settings.WORKER_CONCURRENCY)
     worker_task = asyncio.create_task(worker.run())

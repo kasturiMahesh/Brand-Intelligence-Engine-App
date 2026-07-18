@@ -51,21 +51,35 @@ async def submit_search(req: SearchRequest):
             "domain":   item.get("domain", ""),
         })
 
-    # Single batch INSERT — one round trip for all 30 URLs
+    # Single batch INSERT — one round trip for all URLs
     stmt = (
-        pg_insert(SearchResult)
+        pg_insert(SearchResult.__table__)
         .values(rows)
-        .on_conflict_do_nothing(index_elements=["url_hash"])
+        .on_conflict_do_nothing(index_elements=[SearchResult.url_hash])
     )
-    async with AsyncSessionLocal() as session:
-        await session.execute(stmt)
-        await session.commit()
+    try:
+        async with AsyncSessionLocal() as session:
+            await session.execute(stmt)
+            await session.commit()
+    except Exception as exc:
+        logger.exception("Database insert failed for search results")
+        raise HTTPException(
+            status_code=500,
+            detail="Could not save search results. Please try again later.",
+        )
 
     # Enqueue (already has url_hash set on each item)
-    queued = await queue_manager.enqueue_batch(
-        job_id,
-        [{**r, "query": req.query} for r in results],
-    )
+    try:
+        queued = await queue_manager.enqueue_batch(
+            job_id,
+            [{**r, "query": req.query} for r in results],
+        )
+    except Exception as exc:
+        logger.exception("Redis enqueue failed for job %s", job_id)
+        raise HTTPException(
+            status_code=500,
+            detail="Could not enqueue search results for processing.",
+        )
 
     logger.info(f"job {job_id[:8]} {len(results)} urls stored, {queued} queued")
 

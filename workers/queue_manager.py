@@ -16,6 +16,7 @@ import time
 from typing import Optional, Dict
 
 import redis.asyncio as aioredis
+from config.database import _normalize_redis_url
 from config.settings import settings
 from utils.logger import get_logger
 
@@ -40,7 +41,7 @@ class QueueManager:
 
     async def initialize(self):
         self._redis = await aioredis.from_url(
-            settings.REDIS_URL,
+            _normalize_redis_url(settings.REDIS_URL),
             encoding="utf-8",
             decode_responses=True,
             max_connections=100,
