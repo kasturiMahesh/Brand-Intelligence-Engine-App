@@ -23,25 +23,25 @@ def _normalize_postgres_url(url: str) -> str:
         scheme = "postgresql+asyncpg"
 
     query = dict(parse_qsl(parsed.query, keep_blank_values=True))
-    sslmode = query.get("sslmode")
+    sslmode = query.pop("sslmode", None)
+    ssl_flag = query.pop("ssl", None)
+    ssl_enabled = None
+
     if sslmode is not None:
         normalized = str(sslmode).strip().lower()
-        if normalized in {"require", "required", "true", "1", "yes", "on"}:
-            query["sslmode"] = "require"
-        elif normalized in {"disable", "allow", "prefer", "verify-ca", "verify-full"}:
-            query["sslmode"] = normalized
+        if normalized in {"disable", "false", "0", "no", "off"}:
+            ssl_enabled = False
         else:
-            query["sslmode"] = "require"
+            ssl_enabled = True
 
-    ssl_flag = query.get("ssl")
-    if ssl_flag is not None and "sslmode" not in query:
+    if ssl_flag is not None and ssl_enabled is None:
         normalized_ssl = str(ssl_flag).strip().lower()
-        if normalized_ssl in {"true", "1", "yes", "on"}:
-            query.pop("ssl", None)
-            query["sslmode"] = "require"
-        elif normalized_ssl in {"false", "0", "no", "off"}:
-            query.pop("ssl", None)
-            query["sslmode"] = "disable"
+        ssl_enabled = normalized_ssl not in {"false", "0", "no", "off"}
+
+    if ssl_enabled is True:
+        query["ssl"] = "true"
+    elif ssl_enabled is False:
+        query["ssl"] = "false"
 
     parsed = parsed._replace(scheme=scheme, query=urlencode(query))
     return urlunparse(parsed)
