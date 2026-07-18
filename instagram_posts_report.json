@@ -1,0 +1,79 @@
+{
+  "search": {
+    "job_id": "b7477ffd-03f5-4cc4-8eb0-05a27cf70676",
+    "query": "instagram posts",
+    "urls_found": 10,
+    "queued": 10,
+    "message": "10 URLs queued. Poll /api/v1/search/status/b7477ffd-03f5-4cc4-8eb0-05a27cf70676"
+  },
+  "status": {
+    "job_id": "b7477ffd-03f5-4cc4-8eb0-05a27cf70676",
+    "query": "",
+    "total_urls": 10,
+    "pending": 0,
+    "processing": 0,
+    "completed": 1,
+    "failed": 9,
+    "skipped": 0,
+    "progress_pct": 100.0
+  },
+  "content": {
+    "query": "instagram posts",
+    "total": 1,
+    "returned": 1,
+    "page": 1,
+    "results": [
+      {
+        "url": "https://x.com/instagram",
+        "url_hash": "94312d82997999b0b9cdbe6b8951f30a3a0102bdd2dd5a52c7db95cf5d419c30",
+        "query": "instagram posts",
+        "source_domain": "x.com",
+        "title": "Instagram (@instagram) / X",
+        "meta_description": "Discover what's new on Instagram 🔎✨",
+        "headings": {
+          "h1": [],
+          "h2": [],
+          "h3": []
+        },
+        "relevant_text": "Instagram @instagram 21h What does @ MLB All-Star Week look like through @ bryceharper3 's eyes? 777K 0 7 7 7 K Instagram @instagram Jul 9 Instagram (@instagram) • Instagram reel From instagram.com 37K 0 3 7 K Instagram @instagram Jul 8 Serving looks from Lagos ✨\n\n🎥: @ giverachelashot 00:00 4.3M 0 4 .",
+        "content_summary": "Instagram @instagram 21h What does @ MLB All-Star Week look like through @ bryceharper3 's eyes?. Take a look through his Oakley Meta glasses ⚾🕶️ 00:00 580K 0 5 8 0 K Instagram @instagram 21h Instagram (@instagram) • Instagram reel From instagram.com 18K 0 1 8 K Instagram @instagram Jul 16 wearable whimsy ✨🐦\n\n🎥: Caitlin Eder 00:00 696K 0 6 9 6 K Instagram @instagram Jul 16 Instagram (@instagram) • Instagram reel From instagram.com 28K 0 2 8 K Instagram @instagram Jul 15 Day in the life -- animated edition 🌸🖌️\n\n🎥: nimberlyy 00:00 692K 0 6 9 2 K Instagram @instagram Jul 15 Instagram (@instagram)",
+        "key_points": [
+          "Instagram @instagram 21h What does @ MLB All-Star Week look like through @ bryceharper3 's eyes?",
+          "777K 0 7 7 7 K Instagram @instagram Jul 9 Instagram (@instagram) • Instagram reel From instagram.com 37K 0 3 7 K Instagr"
+        ],
+        "relevance_score": 0.88,
+        "confidence_score": 0.65,
+        "sentiment": "neutral",
+        "source_credibility": "medium",
+        "word_count": 417,
+        "language": "en",
+        "author": "Instagram",
+        "publish_date": "2026-07-17T16:08:46.000Z",
+        "canonical_url": "https://x.com/instagram",
+        "content_hash": "eb21b28cde1e675a0858e0607ce2b43b38ca4522c6a6e3986ce083eb86af89eb",
+        "timestamp": "2026-07-18T13:40:12.181393+00:00"
+      }
+    ]
+  },
+  "analytics": {
+    "query": "instagram posts",
+    "total_documents": 1,
+    "unique_domains": 1,
+    "avg_relevance": 0.88,
+    "avg_confidence": 0.65,
+    "avg_word_count": 417.0,
+    "total_words": 417,
+    "sentiment": {
+      "neutral": 1
+    },
+    "source_credibility": {
+      "medium": 1
+    },
+    "languages": {
+      "en": 1
+    },
+    "top_domains": [
+      "x.com"
+    ]
+  }
+}

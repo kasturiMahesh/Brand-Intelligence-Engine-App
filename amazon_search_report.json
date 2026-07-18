@@ -1,0 +1,79 @@
+{
+  "search_response": {
+    "job_id": "364e8e4c-3d54-4f70-86a0-c510e82a632a",
+    "query": "amazon",
+    "urls_found": 6,
+    "queued": 6,
+    "message": "6 URLs queued. Poll /api/v1/search/status/364e8e4c-3d54-4f70-86a0-c510e82a632a"
+  },
+  "job_status": {
+    "job_id": "364e8e4c-3d54-4f70-86a0-c510e82a632a",
+    "query": "",
+    "total_urls": 6,
+    "pending": 0,
+    "processing": 0,
+    "completed": 1,
+    "failed": 3,
+    "skipped": 2,
+    "progress_pct": 100.0
+  },
+  "results": {
+    "query": "amazon",
+    "total": 1,
+    "returned": 1,
+    "page": 1,
+    "results": [
+      {
+        "url": "https://www.amazon.com/gp/css/homepage.html",
+        "url_hash": "e7267b0a7cb33bbc3cccdcf4daa43527a32b88081219d6a60d2d0161cefbb341",
+        "query": "amazon",
+        "source_domain": "amazon.com",
+        "title": "Your Account",
+        "meta_description": "",
+        "headings": {
+          "h1": [
+            "Your Account"
+          ],
+          "h2": [
+            "Your Orders",
+            "Login & security",
+            "Prime",
+            "Your Addresses",
+            "Your business account",
+            "Gift cards",
+            "Your Payments",
+            "Your Amazon Family",
+            "Digital Services and Device Support",
+            "Your Lists",
+            "Customer Service",
+            "Your Messages",
+            "Ordering and shopping preferences",
+            "Digital content and devices",
+            "Memberships and subscriptions",
+            "Communication and content",
+            "Shopping programs and rentals",
+            "Other programs",
+            "Manage your data"
+          ],
+          "h3": []
+        },
+        "relevant_text": "",
+        "content_summary": "Your Orders Track, return, cancel an order, download invoice or buy again Login & security Edit login, name, and mobile number Prime Manage your membership, view benefits, and payment settings Your Addresses Edit, remove or set default address Your business account Sign up to save with business-exclusive pricing, schedule fast deliveries during business-hours, and more Gift cards View balance or redeem a card, and purchase a new Gift Card Your Payments View all transactions, manage payment methods and settings Your Amazon Family Manage profiles, sharing, and permissions in one place Digital Se",
+        "key_points": [
+          "Your Orders Track, return, cancel an order, download invoice or buy again Login & security Edit login, name, and mobile"
+        ],
+        "relevance_score": 0.504,
+        "confidence_score": 0.378,
+        "sentiment": "neutral",
+        "source_credibility": "medium",
+        "word_count": 226,
+        "language": "en",
+        "author": "",
+        "publish_date": "",
+        "canonical_url": "https://www.amazon.com/gp/css/homepage.html",
+        "content_hash": "db6938d757e9b9fca6efb9733b2d3b7537ccc3c3d52cc2726e5f7f24aaf09e12",
+        "timestamp": "2026-07-18T12:44:09.037047+00:00"
+      }
+    ]
+  }
+}

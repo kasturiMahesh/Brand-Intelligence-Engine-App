@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.env
+.env
+*.env.local
+*.env.*.local
+venv/
+source/
+.pytest_cache/
+.mypy_cache/
+.pytype/
+# Node
+node_modules/
+.dist/
+dist/
+.npm/
+*.log
+# Build
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+# IDE
+.vscode/
+.idea/
+# OS
+desktop.ini
+# VS Code
+.history/
