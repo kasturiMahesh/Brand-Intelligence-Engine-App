@@ -14,7 +14,7 @@ from typing import AsyncGenerator
 logger = get_logger(__name__)
 
 
-def _normalize_postgres_url(url: str) -> str:
+def _normalize_postgres_url(url: str) -> tuple[str, dict]:
     parsed = urlparse(url)
     scheme = parsed.scheme
     if scheme == "postgres":
@@ -25,24 +25,23 @@ def _normalize_postgres_url(url: str) -> str:
     query = dict(parse_qsl(parsed.query, keep_blank_values=True))
     sslmode = query.pop("sslmode", None)
     ssl_flag = query.pop("ssl", None)
-    ssl_value = None
+    ssl_required = None
 
     if sslmode is not None:
         normalized = str(sslmode).strip().lower()
-        if normalized in {"disable", "false", "0", "no", "off"}:
-            ssl_value = "disable"
-        else:
-            ssl_value = "require"
-
-    if ssl_flag is not None and ssl_value is None:
+        ssl_required = normalized not in {"disable", "false", "0", "no", "off"}
+    elif ssl_flag is not None:
         normalized_ssl = str(ssl_flag).strip().lower()
-        ssl_value = "disable" if normalized_ssl in {"false", "0", "no", "off"} else "require"
+        ssl_required = normalized_ssl not in {"disable", "false", "0", "no", "off"}
 
-    if ssl_value is not None:
-        query["ssl"] = "true" if ssl_value == "require" else "false"
+    connect_args: dict = {}
+    if ssl_required is True:
+        connect_args["ssl"] = True
+    elif ssl_required is False:
+        connect_args["ssl"] = False
 
     parsed = parsed._replace(scheme=scheme, query=urlencode(query))
-    return urlunparse(parsed)
+    return urlunparse(parsed), connect_args
 
 
 def _normalize_redis_url(url: str) -> str:
@@ -58,9 +57,11 @@ def _normalize_redis_url(url: str) -> str:
 
 # ─── PostgreSQL ───────────────────────────────────────────────────────────────
 
+postgres_url, postgres_connect_args = _normalize_postgres_url(settings.POSTGRES_URL)
 engine = create_async_engine(
-    _normalize_postgres_url(settings.POSTGRES_URL),
+    postgres_url,
     echo=settings.DEBUG,
+    connect_args=postgres_connect_args,
     pool_size=20,
     max_overflow=10,
     pool_pre_ping=True,
