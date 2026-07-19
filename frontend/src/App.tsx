@@ -73,7 +73,7 @@ function App() {
               <h2 className="text-xl font-semibold">Top matched documents</h2>
               <p className="mt-2 text-sm text-slate-400">{contentQuery.data.total} results for "{contentQuery.data.query}"</p>
               <div className="mt-4 space-y-4">
-                {contentQuery.data.results.slice(0, 6).map((item) => (
+                {(contentQuery.data.results ?? []).slice(0, 6).map((item) => (
                   <SearchResult key={item.url_hash} item={item} />
                 ))}
               </div>
@@ -113,7 +113,7 @@ function AnalyticsPanel({ data }: { data: { query: string; total_documents: numb
       <div className="mt-6">
         <p className="text-sm text-slate-400">Top domains</p>
         <ul className="mt-3 space-y-2 text-sm text-slate-200">
-          {data.top_domains.map((domain) => (
+          {(data.top_domains ?? []).map((domain) => (
             <li key={domain} className="rounded-2xl bg-slate-950/80 px-4 py-3">{domain}</li>
           ))}
         </ul>
