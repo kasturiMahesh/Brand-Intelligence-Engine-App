@@ -25,7 +25,20 @@ async def analytics_summary(query: str = Query(..., min_length=2)):
     ]
     result = await col.aggregate(pipeline).to_list(length=1)
     if not result:
-        return {"query": query, "message": "No processed data found"}
+        return {
+            "query":              query,
+            "message":            "No processed data found",
+            "total_documents":    0,
+            "unique_domains":     0,
+            "avg_relevance":      0,
+            "avg_confidence":     0,
+            "avg_word_count":     0,
+            "total_words":        0,
+            "sentiment":          {},
+            "source_credibility": {},
+            "languages":          {},
+            "top_domains":        [],
+        }
 
     r = result[0]
     def dist(lst):
