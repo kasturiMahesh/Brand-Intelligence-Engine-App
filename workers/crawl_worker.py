@@ -283,7 +283,7 @@ class CrawlWorker:
             queue_manager.mark_complete(job, "skipped"),
         )
         ms = int((time.monotonic() - t0) * 1000)
-        logger.debug(f"skip {reason[:40]} {ms}ms {url_hash[:12]}")
+        logger.info(f"skip {reason[:60]} {ms}ms {url_hash[:12]}")
 
     async def _fail(self, url_hash: str, job: dict, error: str, t0: float):
         requeued = await queue_manager.requeue_with_backoff(job, error)
